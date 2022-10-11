@@ -6,7 +6,7 @@ The data set only represents a single transformation type; timber docking.
 
 Timber docking is the process of taking one or more source pieces of timber of a certain length, and cutting them down into smaller child pieces.
 
-For example, a piece of timber 12 metres long could be cut in half to make two pieces that are 6 metres each. Another example could be cutting two 4.8 metre lengths into thirds to make six pieces at 1.6 metres.
+For example, a piece of timber 12 metres long could be cut in half to make two pieces that are 6 metres each. Another example could be cutting two 9 metre lengths into thirds to make six pieces at 3 metres.
 
 The first example would be represented in the data set as per below
 
@@ -39,12 +39,12 @@ and the second example would be presented in the data set as per below
 		{
 			"partNum": "SL1524042H2S",
 			"qty": -2,
-			"size": 4.8
+			"size": 9
 		},
 		{
 			"partNum": "SL1524042H2S",
 			"qty": 6,
-			"size": 1.6
+			"size": 3
 		}
 	]
 }
