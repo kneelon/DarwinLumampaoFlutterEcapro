@@ -30,7 +30,7 @@ The first example would be represented in the data set as per below
 
 which yields a balance of 0, since (-1 * 12 = -12) + (2 * 6 = 12) = 0
 
-and the seconds example would be presented in the data set as per below
+and the second example would be presented in the data set as per below
 
 ```json
 {
