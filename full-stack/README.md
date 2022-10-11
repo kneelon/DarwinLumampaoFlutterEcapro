@@ -1,6 +1,6 @@
 # Instructions
 
-Source data: https://github.com/evasive-software/csp-q2-2022/tree/master/full-stack
+Source data: [https://github.com/evasive-software/csp-q2-2022/tree/master/full-stack](https://github.com/evasive-software/csp-q2-2022/tree/master/full-stack)
 
 The file `data/input-data.json` contains a list of records representing stock transformations of pieces of timber in the distribution centre.
 
