@@ -1,9 +1,10 @@
-
+import 'package:ecapro/contract.dart' as constants;
 import 'dart:convert';
 import 'package:ecapro/transaction_model.dart';
 import 'package:ecapro/transformation_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' as rootBundle;
+import 'package:flutter/services.dart' as root_bundle;
 
 class DisplayPage extends StatefulWidget {
   const DisplayPage({Key? key}) : super(key: key);
@@ -18,27 +19,39 @@ class _DisplayPageState extends State<DisplayPage> {
   num invalidCount = 0;
   int totalItem = 0;
 
-  num displayValid = 0;
-  num displayInvalid = 0;
-  int displayTotal = 0;
-
-
   num result = 0;
   num totalResult = 0;
   List<TransformationModel> transformation = [];
 
   Future<List<TransactionModel>> readTransaction() async{
-    final jsonData = await rootBundle.rootBundle.loadString('assets/input_data.json');
-    //final list = json.decode(jsonData) as List<dynamic>;
+    final jsonData = await root_bundle.rootBundle.loadString('assets/input_data.json');
     final list = json.decode(jsonData) as List<dynamic>;
     return list.map((e) => TransactionModel.fromJson(e)).toList();
 
   }
 
+
+  void check(num i){
+
+    if (i % 0.3 == 0) {
+      if(kDebugMode) print('No $i');
+    }else {
+      if(kDebugMode) print('Yes $i');
+    }
+  }
+
+  void lateInitialize(){
+    Future.delayed(const Duration(seconds: 1), (){
+      setState(() {
+        initializeCounter();
+      });
+    });
+  }
+
   @override
   void initState(){
     super.initState();
-
+    lateInitialize();
   }
 
   
@@ -59,23 +72,20 @@ class _DisplayPageState extends State<DisplayPage> {
               FutureBuilder(
                 future: readTransaction(),
                 builder: (context, data){
+
                   if(data.hasError){
                     return Center(child: Text('${data.error}'),);
                   }else if(data.hasData){
                     var items = data.data as List<TransactionModel>;
                     totalItem = items.length;
-                    initializeCounter();
+
 
                     return Expanded(
                       child: ListView.builder(
                         itemCount: items.length,
                         itemBuilder: (context, index){
                           transformation = items[index].transformations!;
-                          //print(transformation![0].size.toString());
-                          //num size = 0;
-                          //totalItem = items.length;
 
-                          //print(transformation.length.toString());
                           for(int i=0; i < transformation.length; i++){
                             num size = transformation[i].size;
                             num qty = transformation[i].qty;
@@ -84,14 +94,9 @@ class _DisplayPageState extends State<DisplayPage> {
                             if(result >= 3 && result <= 12){
                               validCount = result + validCount;
                             }
-
                             validCount = result + validCount;
-                            //initializeCounter();
-                            //print();
                           }
-
-                          //return result < 3 ? Text(result.toString()) : Container();
-                          //return validCount >= 0 ? Text(validCount.toString()) : Container();
+                          initializeCounter();
                           return Column(
                             children: [
                               Padding(
@@ -99,7 +104,7 @@ class _DisplayPageState extends State<DisplayPage> {
                                   vertical: 3.0,
                                   horizontal: 12,
                                 ),
-                                child: Container(
+                                child: SizedBox(
                                   width: double.infinity,
                                   child: Padding(
                                     padding: const EdgeInsets.all(5.0),
@@ -109,22 +114,27 @@ class _DisplayPageState extends State<DisplayPage> {
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
-                                            const Text('Transaction', style: TextStyle(fontWeight: FontWeight.bold),),
-                                            Text(items[index].transaction.toString()),
+                                            const Text(
+                                              constants.wordTransactionNo,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.blueAccent,
+                                                fontSize: 14),),
+                                            Text(items[index].transaction.toString(), style: const TextStyle(fontSize: 12),),
                                           ],
                                         ),
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
-                                            const Text('Valid', style: TextStyle(fontWeight: FontWeight.bold),),
-                                            Text(result >= 3 && result <= 12 ? 'Yes' : 'No'),
+                                            const Text(constants.capValid, style: TextStyle(fontWeight: FontWeight.bold),),
+                                            Text(result >= 3 && result <= 12 ? constants.capYes : constants.capNo),
                                           ],
                                         ),
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
-                                            const Text('Balance',style: TextStyle(fontWeight: FontWeight.bold)),
-                                            Text(result >= 3 && result <= 12 ? '$result' : '0'),
+                                            const Text(constants.capBalance,style: TextStyle(fontWeight: FontWeight.bold)),
+                                            Text(result >= 3 && result <= 12 ? '$result' : constants.zero),
                                           ],
                                         ),
                                         const SizedBox(height: 5),
@@ -136,7 +146,7 @@ class _DisplayPageState extends State<DisplayPage> {
                                               Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  const Text('Error Reason', style: TextStyle(fontWeight: FontWeight.bold),),
+                                                  const Text('Error', style: TextStyle(fontWeight: FontWeight.bold),),
                                                   result < 3 ? const Text('This item is shorter than 3 meters') : Container(),
                                                   result > 12 ? const Text('This item is larger than 12 meters') : Container(),
                                                 ],
@@ -159,15 +169,11 @@ class _DisplayPageState extends State<DisplayPage> {
                     );
 
                   }else {
-                    initializeCounter();
                     return const Center(child: CircularProgressIndicator());
                   }
                 },
               ),
               initializeCounter(),
-              // ElevatedButton(onPressed: (){
-              //   initializeCounter();
-              // }, child: const Text('Show Valid Item count'))
             ],
           ),
         ),
@@ -180,20 +186,20 @@ class _DisplayPageState extends State<DisplayPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Valid :  $validCount',
+            '${constants.capValid} :  $validCount',
             style: const TextStyle(
                 color: Colors.black54,
                 fontWeight: FontWeight.bold,
                 fontSize: 16),),
           Text(
-              'Invalid :  $totalItem - $validCount',
+              '${constants.capInvalid} :  ${totalItem - validCount}',
               style: const TextStyle(
                 color: Colors.redAccent,
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               )),
           Text(
-              'Transactions :  $totalItem',
+              '${constants.capTransactions} :  $totalItem',
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
