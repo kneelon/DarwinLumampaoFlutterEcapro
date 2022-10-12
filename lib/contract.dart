@@ -6,6 +6,8 @@ const String size = 'size';
 const String qty = 'qty';
 const String isValid = 'isValid';
 
+const String empty = '';
+
 const String capYes = 'Yes';
 const String capNo = 'No';
 const String capValid = 'Valid';

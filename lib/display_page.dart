@@ -79,13 +79,14 @@ class _DisplayPageState extends State<DisplayPage> {
                     var items = data.data as List<TransactionModel>;
                     totalItem = items.length;
 
-
                     return Expanded(
                       child: ListView.builder(
                         itemCount: items.length,
                         itemBuilder: (context, index){
                           transformation = items[index].transformations!;
-
+                          bool isMatched = true;
+                          String partNum = constants.empty;
+                          String partNumMatch = constants.empty;
                           for(int i=0; i < transformation.length; i++){
                             num size = transformation[i].size;
                             num qty = transformation[i].qty;
@@ -94,8 +95,21 @@ class _DisplayPageState extends State<DisplayPage> {
                             if(result >= 3 && result <= 12){
                               validCount = result + validCount;
                             }
+
+                            partNumMatch = transformation[0].partNum;
+                            partNum = transformation[i].partNum;
                             validCount = result + validCount;
+
+                            if(partNum != partNumMatch){
+                              isMatched = false;
+                            }
+
+                            if(i == transformation.length-1){
+                              partNum = constants.empty;
+                              partNumMatch = constants.empty;
+                            }
                           }
+
                           initializeCounter();
                           return Column(
                             children: [
@@ -127,7 +141,7 @@ class _DisplayPageState extends State<DisplayPage> {
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             const Text(constants.capValid, style: TextStyle(fontWeight: FontWeight.bold),),
-                                            Text(result >= 3 && result <= 12 ? constants.capYes : constants.capNo),
+                                            isMatched == false ? const Text(constants.capNo) : Text(result >= 3 && result <= 12 ? constants.capYes : constants.capNo),
                                           ],
                                         ),
                                         Row(
@@ -135,6 +149,15 @@ class _DisplayPageState extends State<DisplayPage> {
                                           children: [
                                             const Text(constants.capBalance,style: TextStyle(fontWeight: FontWeight.bold)),
                                             Text(result >= 3 && result <= 12 ? '$result' : constants.zero),
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            const Text('PartNum Matched',style: TextStyle(fontWeight: FontWeight.bold)),
+                                            isMatched == false
+                                              ? const Text('Error False', style: TextStyle(color: Colors.red),)
+                                              : const Text('True'),
                                           ],
                                         ),
                                         const SizedBox(height: 5),
@@ -149,6 +172,7 @@ class _DisplayPageState extends State<DisplayPage> {
                                                   const Text('Error', style: TextStyle(fontWeight: FontWeight.bold),),
                                                   result < 3 ? const Text('This item is shorter than 3 meters') : Container(),
                                                   result > 12 ? const Text('This item is larger than 12 meters') : Container(),
+                                                  isMatched == false ? const Text('Part number does not matched') : Container(),
                                                 ],
                                               ),
                                               const Icon(Icons.error_outline, color: Colors.red,),
@@ -164,7 +188,9 @@ class _DisplayPageState extends State<DisplayPage> {
                               ),
                             ],
                           );
+
                         }
+
                       ),
                     );
 

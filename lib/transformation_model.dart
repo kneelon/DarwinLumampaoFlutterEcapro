@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:ecapro/contract.dart' as constants;
 
 class TransformationModel{
-  final String? partNum;
+  final String partNum;
   final num size;
   final num qty;
 
