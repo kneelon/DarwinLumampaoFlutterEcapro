@@ -148,7 +148,7 @@ class _DisplayPageState extends State<DisplayPage> {
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             const Text(constants.capBalance,style: TextStyle(fontWeight: FontWeight.bold)),
-                                            Text(result >= 3 && result <= 12 ? '$result' : constants.zero),
+                                            Text(result >= 3 && result <= 12 ? '${double.parse((result).toStringAsFixed(2))}' : constants.zero),
                                           ],
                                         ),
                                         Row(
@@ -212,7 +212,7 @@ class _DisplayPageState extends State<DisplayPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '${constants.capValid} :  $validCount',
+            '${constants.capValid} :  ${double.parse((validCount).toStringAsFixed(2))}',
             style: const TextStyle(
                 color: Colors.black54,
                 fontWeight: FontWeight.bold,
@@ -230,6 +230,26 @@ class _DisplayPageState extends State<DisplayPage> {
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               )),
+          // Text(
+          //   '${constants.capValid} :  $validCount',
+          //   style: const TextStyle(
+          //       color: Colors.black54,
+          //       fontWeight: FontWeight.bold,
+          //       fontSize: 16),),
+          // Text(
+          //     '${constants.capInvalid} :  ${totalItem - validCount}',
+          //     style: const TextStyle(
+          //       color: Colors.redAccent,
+          //       fontWeight: FontWeight.bold,
+          //       fontSize: 16,
+          //     )),
+          // Text(
+          //     '${constants.capTransactions} :  $totalItem',
+          //     style: const TextStyle(
+          //       fontWeight: FontWeight.bold,
+          //       fontSize: 16,
+          //     )),
+
         ],
       ),
     );
